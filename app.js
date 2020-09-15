@@ -10,7 +10,9 @@ var usersRouter = require('./routes/users');
 var homeRouter = require('./routes/homeRouter');
 var userRouter= require('./routes/userRouter');
 var cors = require('cors')
-const url = 'mongodb://localhost:27017/ionicServer';
+const dotenv = require("dotenv");
+dotenv.config();
+const url = process.env.mongoURI;
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
