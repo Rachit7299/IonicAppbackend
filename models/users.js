@@ -13,7 +13,8 @@ const userSchema = new Schema({
     },
     mobile:{
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     city:{
         type: String,
