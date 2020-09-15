@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 const Category = require('../models/catgoryList');
 const homeRouter = express.Router();
 const FeaturedList = require('../models/featuredList');
+const TopPicks = require('../models/topPicks');
 homeRouter.use(bodyParser.json());
 
 homeRouter.route('/')
@@ -31,6 +32,17 @@ homeRouter.route('/featured')
         res.setHeader('Content-Type', 'application/json');
         res.json(featuredList)
     },(err)=> next(err))
+    .catch((err)=>next(err));
+})
+
+homeRouter.route('/toppicks')
+.get((req,res,next)=>{
+    TopPicks.find({})
+    .then((topPicks)=>{
+        res.statusCode=200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(topPicks)
+    },(err)=>next(err))
     .catch((err)=>next(err));
 })
 
