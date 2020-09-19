@@ -9,10 +9,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var homeRouter = require('./routes/homeRouter');
 var userRouter= require('./routes/userRouter');
+var productRouter = require('./routes/productRouter');
 var cors = require('cors')
 const dotenv = require("dotenv");
 dotenv.config();
-const url = process.env.mongoURI;
+const url = "mongodb://localhost:27017/ionicServer";
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -42,6 +43,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/home', homeRouter);
 app.use('/user', userRouter);
+app.use('/products', productRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

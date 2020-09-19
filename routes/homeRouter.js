@@ -1,10 +1,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 const Category = require('../models/catgoryList');
+const Products = require('../models/product')
 const homeRouter = express.Router();
 const FeaturedList = require('../models/featuredList');
 const TopPicks = require('../models/topPicks');
 homeRouter.use(bodyParser.json());
+const Carousel = require('../models/caraousel');
 
 homeRouter.route('/')
 .all((req,res,next)=>{
@@ -26,7 +28,7 @@ homeRouter.route('/categories')
 
 homeRouter.route('/featured')
 .get((req,res,next)=>{
-    FeaturedList.find({})
+    Products.find({}).limit(7)
     .then((featuredList)=>{
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
@@ -37,11 +39,20 @@ homeRouter.route('/featured')
 
 homeRouter.route('/toppicks')
 .get((req,res,next)=>{
-    TopPicks.find({})
+    Products.find({}).skip(2).limit(7)
     .then((topPicks)=>{
         res.statusCode=200;
         res.setHeader('Content-Type', 'application/json');
         res.json(topPicks)
+    },(err)=>next(err))
+    .catch((err)=>next(err));
+})
+
+homeRouter.route('/caraousel')
+.get((req,res,next)=>{
+    Carousel.find({})
+    .then((items)=>{
+        res.status(200).json(items)
     },(err)=>next(err))
     .catch((err)=>next(err));
 })
