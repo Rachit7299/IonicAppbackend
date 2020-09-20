@@ -15,6 +15,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const url = "mongodb://localhost:27017/ionicServer";
 const connect = mongoose.connect(url);
+const authenticate = require('./authenticate')
 
 connect.then((db) => {
   console.log("Connected correctly to server");

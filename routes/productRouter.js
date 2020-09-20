@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 const Products = require('../models/product')
 const productRouter = express.Router();
 productRouter.use(bodyParser.json());
+const authenticate = require('../authenticate')
 
 productRouter.route('/')
 .all((req,res,next)=>{
@@ -12,7 +13,7 @@ productRouter.route('/')
 })
 
 productRouter.route('/products-all')
-.get((req,res,next)=>{
+.get(authenticate.checkToken,(req,res,next)=>{
     Products.find({})
     .then((products)=>{
         res.statusCode=200;
