@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt');
 const config = require('../config');
 
 const jwt= require('jsonwebtoken');
+const Cart = require('../models/cart')
 
 
 userRouter.route('/')
@@ -60,6 +61,49 @@ userRouter.route("/login").post((req,res,next)=>{
     }
   },((err)=>next(err))
   ).catch((err)=>next(err));
+});
+
+userRouter.route("/:userId").get((req,res,next)=>{
+  users.findOne({_id: req.params.userId})
+  .then((user)=>{
+    if(!user){
+      res.status(401).end('User Not Found');
+    }
+    else{
+      res.status(200).json(user);
+    }
+  },((err)=>{
+    res.status(401).end('User Not Found')
+  })
+  ).catch((err)=>next(err));
 })
+
+userRouter.route("/name/:userId").get((req,res,next)=>{
+  users.findOne({_id: req.params.userId})
+  .then((user)=>{
+    if(!user){
+      res.status(401).end('User Not Found');
+    }
+    else{
+      res.status(200).json(user.name);
+    }
+  },((err)=>{
+    res.status(401).end('Unknown Error')
+  })
+  ).catch((err)=>next(err));
+});
+
+userRouter.route("/deleteUser/:Id")
+.delete((req,res,next)=>{
+  users.deleteOne({_id: req.params.Id})
+  .then((result)=>{
+    Cart.deleteMany({user_id: req.params.Id})
+    .then((result)=>{
+      res.status(200).end('Account Deleted');
+    },((err)=>next(err))
+    ).catch((err)=>next(err))
+  },((err)=>next(err))
+  ).catch((err)=>next(err))
+});
 
 module.exports=userRouter;
