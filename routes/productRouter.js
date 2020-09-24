@@ -28,8 +28,15 @@ productRouter.route('/viewcart/:userId')
 .get((req,res,next)=>{
     Cart.find({user_id:req.params.userId})
     .then((prdts)=>{
-        if(prdts)
-        res.status(200).json(prdts);
+        if(prdts.length){
+            let i=0;
+            let cost=0;
+            while(i<prdts.length){
+                cost=cost+prdts[i].price;
+                i=i+1;
+            }
+            res.status(200).json({items: prdts,total:cost});
+        }
         else
         res.status(204).json({"status":"No Products"})
     },(err)=>next(err))
