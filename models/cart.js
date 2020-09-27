@@ -23,6 +23,10 @@ const cartSchema = new Schema({
         type: Number,
         required: true
     },
+    rating:{
+        type: Number,
+        required: true
+    },
     stock:{
         type: Boolean,
         required: true

@@ -52,7 +52,7 @@ userRouter.route("/login").post((req,res,next)=>{
       bcrypt.compare(req.body.pswd,user.pswd,(err, result)=>{
         if(result == true){
           let token= jwt.sign({id:user._id},config.secretKey,{expiresIn:'24h'});
-          res.status(200).json({"Login":"True","token":token});
+          res.status(200).json({"Login":"True","token":token,"_id":user._id});
         }
         else{
           res.status(403).send('Incorrect Password');

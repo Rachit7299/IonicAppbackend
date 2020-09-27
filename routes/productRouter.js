@@ -24,6 +24,20 @@ productRouter.route('/products-all')
     .catch((err)=>next(err));
 });
 
+productRouter.route('/viewProduct/:prdtId')
+.get((req,res,next)=>{
+    Products.findOne({_id:req.params.prdtId})
+    .then((prdt)=>{
+        if(prdt){
+            res.status(200).json(prdt);
+        }
+        else{
+            res.status(204).end('Product Not Found');
+        }
+    },((err)=>{next(err)})
+    ).catch((err)=>next(err));
+})
+
 productRouter.route('/viewcart/:userId')
 .get((req,res,next)=>{
     Cart.find({user_id:req.params.userId})
@@ -54,6 +68,7 @@ productRouter.route('/addcart/:userId&:prdtId')
                 title: product.title,
                 image: product.image,
                 price:product.price,
+                rating:product.rating,
                 stock: product.stock,                
             }).then((response)=>{
                 res.status(200).end('Added to Cart');
@@ -83,5 +98,6 @@ productRouter.route("/del-all-cart/:Id")
     },((err)=>next(err))
     ).catch((err)=>next(err));
 });
+
 
 module.exports = productRouter;

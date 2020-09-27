@@ -14,7 +14,7 @@ var cors = require('cors')
 const dotenv = require("dotenv");
 dotenv.config();
 const url = "mongodb://localhost:27017/ionicServer";
-const connect = mongoose.connect(url);
+const connect = mongoose.connect(url,{ useNewUrlParser: true });
 const authenticate = require('./authenticate')
 
 connect.then((db) => {
