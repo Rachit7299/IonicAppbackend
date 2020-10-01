@@ -106,4 +106,56 @@ userRouter.route("/deleteUser/:Id")
   ).catch((err)=>next(err))
 });
 
+userRouter.route("/add-address/:Id")
+.post((req,res,next)=>{
+  users.findOne({_id: req.params.Id})
+  .then((user)=>{
+    if(user!=null){
+      user.my_address.push(req.body);
+      user.save()
+      .then((user)=>{
+        res.status(200).json(user);
+      },(err)=>next(err));
+    }
+    else{
+      err = new Error('User ' + req.params.Id + ' not found');
+      err.status = 404;
+      return next(err);
+    }
+  }, (err) => next(err))
+  .catch((err) => next(err)
+  );
+})
+
+userRouter.route("/orders/:Id")
+.post((req,res,next)=>{
+  users.findOne({_id:req.params.Id})
+  .then((user)=>{
+    if(user!=null){
+      for(let i=0;i<req.body.length;i++){
+        user.orders.push(req.body[i]);
+      }
+      user.save()
+      .then((user)=>{
+        res.status(200).json(user);
+      },(err)=>next(err));
+    }
+    else{
+      err = new Error('User ' + req.params.Id + ' not found');
+      err.status = 404;
+      return next(err);
+    }
+  }, (err) => next(err))
+  .catch((err) => next(err));
+})
+.get((req,res,next)=>{
+  users.findOne({_id:req.params.Id})
+  .then((user)=>{
+    if(user!=null){
+      res.status(200).json(user.orders);
+    }
+  },(err)=>next(err))
+  .catch((err)=> next(err))
+})
+
 module.exports=userRouter;
