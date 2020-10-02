@@ -136,6 +136,7 @@ userRouter.route("/orders/:Id")
         user.orders.push(req.body[i]);
       }
       user.save()
+      Cart.deleteMany({user_id: req.params.Id})
       .then((user)=>{
         res.status(200).json(user);
       },(err)=>next(err));
