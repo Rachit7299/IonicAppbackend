@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
-const Categories = require('./models/catgoryList');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var homeRouter = require('./routes/homeRouter');
@@ -13,8 +12,9 @@ var productRouter = require('./routes/productRouter');
 var cors = require('cors')
 const dotenv = require("dotenv");
 dotenv.config();
-const url = "mongodb://localhost:27017/ionicServer";
+const url = process.env.mongoURI;
 const connect = mongoose.connect(url,{ useNewUrlParser: true });
+var https = require('https');
 const authenticate = require('./authenticate')
 
 connect.then((db) => {
@@ -22,6 +22,15 @@ connect.then((db) => {
 }, (err) => { console.log(err); });
 
 var app = express();
+
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
 
 //Cors Policy
 app.use(
