@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var homeRouter = require('./routes/homeRouter');
 var userRouter= require('./routes/userRouter');
 var productRouter = require('./routes/productRouter');
+var traineeRouter = require('./routes/traineeRouter')
 var cors = require('cors')
 const dotenv = require("dotenv");
 dotenv.config();
@@ -47,6 +48,7 @@ app.use('/users', usersRouter);
 app.use('/home', homeRouter);
 app.use('/user', userRouter);
 app.use('/products', productRouter);
+app.use('/trainee', traineeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

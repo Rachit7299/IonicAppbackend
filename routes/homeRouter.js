@@ -3,8 +3,6 @@ var bodyParser = require('body-parser');
 const Category = require('../models/catgoryList');
 const Products = require('../models/product')
 const homeRouter = express.Router();
-const FeaturedList = require('../models/featuredList');
-const TopPicks = require('../models/topPicks');
 homeRouter.use(bodyParser.json());
 const Carousel = require('../models/caraousel');
 
