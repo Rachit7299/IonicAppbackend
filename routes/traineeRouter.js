@@ -10,15 +10,9 @@ const jwt= require('jsonwebtoken');
 traineeRouter.route("/register").post((req, res, next) => {
     password= req.body.password;
     bcrypt.hash(password, 10, (err, hash) => {
+      req.body.password=hash;
       Trainee
-      .create({
-        name: req.body.name,
-        email: req.body.email,
-        mobile_no: req.body.mobile_no,
-        student_no: req.body.student_no,
-        branch: req.body.branch,
-        password: hash,
-      }).then((user) => {
+      .create(req.body).then((user) => {
         res.status(200).json({ status: "Registration Successful!"});
       }).catch((err) => {
         if (err.code === 11000)
@@ -30,10 +24,10 @@ traineeRouter.route("/register").post((req, res, next) => {
 
 traineeRouter.route('/login')
 .post((req,res,next)=>{
-    Trainee.findOne({student_no:req.body.student_no})
+    Trainee.findOne({email:req.body.email})
     .then((student)=>{
         if(!student){
-            res.status(401).end('Student Not Found');
+            res.status(401).end('User Not Found');
           }
         else{
             bcrypt.compare(req.body.password,student.password,(err,result)=>{
