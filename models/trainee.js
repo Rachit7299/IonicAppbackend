@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const traineeSchema = new Schema({
-    name:{
+    firstName:{
         type:String,
         required: true
     },
-    student_no:{
+    lastName:{
+        type:String,
+        required: true
+    },
+    phone_no:{
         type:Number,
         required:true,
         unique:true
     },
-    branch:{
+    address:{
         type:String,
-        required:true
-    },
-    mobile_no:{
-        type:Number,
         required:true
     },
     email:{
